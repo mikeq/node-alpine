@@ -1,0 +1,42 @@
+name: Docker Push
+
+on: push
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Build and Push node 12
+        uses: mr-smithers-excellent/docker-build-push@v3
+        with:
+          image: mallister/node-alpine
+          tag: 12
+          registry: docker.io
+          dockerfile: Dockerfile-12
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push node 14
+        uses: mr-smithers-excellent/docker-build-push@v3
+        with:
+          image: mallister/node-alpine
+          tag: 14
+          registry: docker.io
+          dockerfile: Dockerfile-14
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push node latest
+        uses: mr-smithers-excellent/docker-build-push@v3
+        with:
+          image: mallister/node-alpine
+          tag: latest
+          registry: docker.io
+          dockerfile: Dockerfile-14
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
